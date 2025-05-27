@@ -181,7 +181,6 @@ elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
         st.error("Chorus audio file not found. Please upload 'fembere_chorus.mp3'.")
 
     st.markdown("#### Stream it here:")
-    st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/why-dont-you-love-me)")
     st.markdown("[Instagram](https://www.instagram.com/akanaka._.tashi/)")
     st.markdown("[TikTok](https://tiktok.com/@atashii_sings)")
 
