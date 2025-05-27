@@ -1,0 +1,7 @@
+
+[theme]
+primaryColor = "#f5d372"            # Soft gold (used for highlights/buttons)
+backgroundColor = "#1b1b1f"         # Deep romantic charcoal (backdrop)
+secondaryBackgroundColor = "#2b2b30" # Slightly lighter charcoal for sections
+textColor = "#fdf6ec"               # Warm ivory-white text
+font = "sans serif"
