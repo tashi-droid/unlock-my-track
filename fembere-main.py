@@ -136,7 +136,14 @@ elif st.session_state.step == 4:
 
     with st.expander("What does 'handi fembere' mean?"):
         st.write("In Shona, *'handi fembere'* means **'I will not guess'**. No games. Just truth.")
+try:
+        with open('fembere_chorus.mp3', 'rb') as chorus_file:
+            chorus_bytes = chorus_file.read()
+            st.audio(chorus_bytes, format='audio/mp3', start_time=0)
+    except FileNotFoundError:
+        st.error("Chorus audio file not found. Please upload 'fembere_chorus.mp3'.")
 
+    st.subheader("Full Track")
     st.markdown("#### Stream it here:")
     st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/fembere)")
 
