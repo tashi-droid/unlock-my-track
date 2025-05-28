@@ -126,7 +126,7 @@ elif st.session_state.step == 3:
                 st.session_state.wrong_guess = True
                 st.session_state.step = 5
 
-# --- Step 4: Ask if they speak Shona (wrong guess) ---
+# --- Step 4: Show meaning if user does NOT speak Shona before unlocking track ---
 elif st.session_state.step == 5 and st.session_state.wrong_guess:
     st.write("## Do You Speak Shona?")
     answer = st.radio("Please select:", ["Yes", "No"])
@@ -143,10 +143,28 @@ elif st.session_state.step == 5 and st.session_state.wrong_guess:
                 st.session_state.step = 3
             else:
                 st.session_state.speaks_shona = False
-                st.session_state.riddle_unlocked = True
-                st.session_state.step = 4
+                st.session_state.step = 6  # Show meaning page first
 
-# --- Step 5: Track Unlocked ---
+# --- Step 5b: Meaning of handi fembere for non-Shona speakers ---
+elif st.session_state.step == 6 and st.session_state.speaks_shona == False:
+    st.markdown('<h1 class="title-pinyon">What does "handi fembere" mean?</h1>', unsafe_allow_html=True)
+    st.write(
+        """
+        In Shona, *'handi fembere'* means **'I will not guess'** — it's a bold call for honesty.  
+        You want clarity, not confusion. Love without mixed signals.  
+        And *'fembera'* means **'to guess'** — so, no games here.
+        """
+    )
+    if st.button("Unlock Track"):
+        st.session_state.riddle_unlocked = True
+        st.session_state.step = 4
+
+    if st.button("Back"):
+        st.session_state.step = 3
+        st.session_state.wrong_guess = False
+        st.session_state.speaks_shona = None
+
+# --- Step 6: Track Unlocked with Coming Soon message ---
 elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
     st.markdown('<h1 class="title-pinyon">Track Unlocked</h1>', unsafe_allow_html=True)
 
@@ -156,16 +174,18 @@ elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
         st.warning("Optional: upload 'Fembere.png' to show the cover art.")
 
     st.write("The track is *Fembere*.")
-    with st.expander("What does 'handi fembere' mean?"):
+
+    st.markdown("🎵 **Coming Soon!** 🎵")
+    st.info("This track isn’t out yet, but stay tuned! You’ll be the first to know when it drops.")
+
+    with st.expander("More about the phrase"):
         st.write(
-            """
-            In Shona, *'handi fembere'* means **'I will not guess'** — it's a bold call for honesty.  
-            You want clarity, not confusion. Love without mixed signals.  
-            And *'fembera'* means **'to guess'** — so, no games here.
-            """
+            "In Shona, *'handi fembere'* means **'I will not guess'** — it's a bold call for honesty. "
+            "You want clarity, not confusion. Love without mixed signals. "
+            "*'Fembera'* means **'to guess'**, so — no games here."
         )
 
-    st.markdown("#### Stream it here:")
+    st.markdown("#### Follow me for updates:")
     st.markdown("[Instagram](https://www.instagram.com/akanaka._.tashi/)")
     st.markdown("[TikTok](https://tiktok.com/@atashii_sings)")
 
@@ -178,10 +198,10 @@ elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
             st.session_state.speaks_shona = None
     with col2:
         if st.button("Ask Me Questions"):
-            st.session_state.step = 6
+            st.session_state.step = 7
 
-# --- Step 6: Q&A ---
-elif st.session_state.step == 6:
+# --- Step 7: Q&A ---
+elif st.session_state.step == 7:
     st.write("## Ask Me Anything")
     question = st.selectbox("Pick a question:", [
         "What inspired this track?",
