@@ -78,10 +78,10 @@ vibe_messages = {
 
 # STEP 1: Pick vibe
 if st.session_state.step == 1:
-    st.title("Unlock My Track")
+    st.markdown('<h1 class="title-pinyon">Unlock My Track</h1>', unsafe_allow_html=True)
     st.subheader("Who Are You Today?")
     vibe = st.radio("Pick your vibe:", list(vibe_messages.keys()), index=0)
-
+    st.markdown("If the application is lagging please double click buttons to proceed😅")
     if st.button("Next"):
         st.session_state.selected_vibe = vibe
         st.session_state.step = 2
@@ -127,9 +127,6 @@ elif st.session_state.step == 4:
         st.image("Fembere.png", caption="Fembere", use_container_width=True)
     except:
         st.warning("Image not found.")
-
-    st.markdown("The track is **Fembere**.")
-    st.markdown('<h1 class="subheader-pinyon">Fembere</h1>', unsafe_allow_html=True)
 
     st.markdown("**Total correct answers so far:** " + str(st.session_state.riddle_correct_total))
 
