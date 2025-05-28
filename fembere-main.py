@@ -143,10 +143,14 @@ elif st.session_state.step == 4:
     except FileNotFoundError:
         st.error("Chorus audio file not found. Please upload 'fembere_chorus.mp3'.")
 
-    st.subheader("Full Track")
-    st.markdown("#### Stream it here:")
+   
+    st.markdown("#### Stream the full track here:")
     st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/fembere)")
 
+    st.markdown("#### My socials:")
+    st.markdown("[Instagram](https://www.instagram.com/akanaka._.tashi/)")
+    st.markdown("[TikTok](https://tiktok.com/@atashii_sings)")
+    
     if st.button("Ask Me Questions"):
         st.session_state.step = 7
 
