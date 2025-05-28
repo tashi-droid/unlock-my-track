@@ -1,10 +1,9 @@
 import streamlit as st
 
 # Page config with your theme colours
-st.set_page_config(page_title="Unlock My Track", layout="centered",
-                   initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Unlock My Track", layout="centered", initial_sidebar_state="collapsed")
 
-# Inject custom CSS and fonts
+# Inject custom theme and fonts
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
@@ -34,7 +33,6 @@ st.markdown("""
         font-size: 1.1rem;
         transition: background-color 0.3s ease;
     }
-
     div.stButton > button:hover {
         background-color: #e0c75a;
     }
@@ -51,23 +49,23 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Initialise Session State ---
-for key, default in {
+# Initialise session state
+for key, val in {
     "step": 1,
     "selected_vibe": None,
     "show_message": False,
     "riddle_unlocked": False,
     "wrong_guess": False,
-    "speaks_shona": None
+    "speaks_shona": None,
 }.items():
     if key not in st.session_state:
-        st.session_state[key] = default
+        st.session_state[key] = val
 
 # --- Step 1: Vibe Selection ---
 if st.session_state.step == 1:
     st.markdown('<h1 class="title-pinyon">Unlock My Track</h1>', unsafe_allow_html=True)
-
     st.write("## Who Are You Today?")
+    
     vibe = st.radio(
         "Pick your vibe:",
         ["The Romantic", "The Overthinker", "The Savage", "The Dreamer"],
@@ -83,26 +81,27 @@ if st.session_state.step == 1:
         if st.session_state.selected_vibe:
             st.session_state.step = 2
 
-# --- Step 2: Vibe Message ---
+# --- Step 2: Show vibe message ---
 elif st.session_state.step == 2:
     st.markdown('<h1 class="title-pinyon">Your Vibe Message</h1>', unsafe_allow_html=True)
-
     vibe = st.session_state.selected_vibe
-    messages = {
+
+    vibe_messages = {
         "The Romantic": "You are deep in love and willing to give your all. This song mirrors that devotion.",
         "The Overthinker": "You analyse every lyric like a puzzle. If love feels uncertain, this will hit deep.",
         "The Savage": "You do not play games. You want honesty and clarity — and this one is straight to the point.",
-        "The Dreamer": "You love the dream of love. Maybe you never say much, but your heart writes novels. This song gets you."
+        "The Dreamer": "You love the dream of love. Maybe you never say much, but your heart writes novels. This song gets you.",
     }
-    st.info(messages.get(vibe, ""))
 
-    if st.button("Proceed to Unlock Track"):
+    st.info(vibe_messages[vibe])
+
+    col1, col2 = st.columns([1, 1])
+    if col1.button("Back"):
+        st.session_state.step = 1
+    if col2.button("Proceed to Unlock Track"):
         st.session_state.step = 3
 
-    if st.button("Back"):
-        st.session_state.step = 1
-
-# --- Step 3: Riddle Page ---
+# --- Step 3: Riddle ---
 elif st.session_state.step == 3:
     st.write("## Solve This Riddle To Unlock The Track")
     st.markdown(
@@ -129,8 +128,8 @@ elif st.session_state.step == 3:
     if st.button("Back"):
         st.session_state.step = 2
 
-# --- Step 4: Track Unlocked ---
-elif st.session_state.step == 4:
+# --- Step 4: Track unlocked ---
+elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
     st.markdown('<h1 class="title-pinyon">Track Unlocked</h1>', unsafe_allow_html=True)
 
     try:
@@ -140,11 +139,11 @@ elif st.session_state.step == 4:
 
     st.write("The track is *Fembere*.")
     with st.expander("What does 'handi fembere' mean?"):
-        st.write(
-            "In Shona, *'handi fembere'* means **'I will not guess'** — it is a bold call for honesty.\n"
-            "You want clarity, not confusion. Love without mixed signals.\n"
-            "And *'fembera'* means **'to guess'** — so, no games here."
-        )
+        st.write("""
+            In Shona, *'handi fembere'* means **'I will not guess'** — it is a bold call for honesty.  
+            You want clarity, not confusion. Love without mixed signals.  
+            And *'fembera'* means **'to guess'** — so, no games here.
+        """)
 
     st.markdown("#### Stream it here:")
     st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/why-dont-you-love-me)")
@@ -160,8 +159,8 @@ elif st.session_state.step == 4:
         st.session_state.wrong_guess = False
         st.session_state.speaks_shona = None
 
-# --- Step 5: Ask if user speaks Shona ---
-elif st.session_state.step == 5:
+# --- Step 5: Ask if user speaks Shona (after wrong guess) ---
+elif st.session_state.step == 5 and st.session_state.wrong_guess:
     st.write("## Do You Speak Shona?")
     answer = st.radio("Please select:", ["Yes", "No"])
 
@@ -178,7 +177,7 @@ elif st.session_state.step == 5:
         st.session_state.step = 3
         st.session_state.wrong_guess = False
 
-# --- Step 6: Q&A Page ---
+# --- Step 6: Q&A ---
 elif st.session_state.step == 6:
     st.write("## Ask Me Anything")
     question = st.selectbox("Pick a question:", [
@@ -190,16 +189,17 @@ elif st.session_state.step == 6:
 
     answers = {
         "What inspired this track?":
-            "This track came from a place of being in love — but realising love only works when both people are truly happy.",
+            "This track came from a place of being in love — but realising love only works when both people are truly happy. "
+            "I was being honest about my needs, but I could feel he was not, and that gap inspired everything.",
         "Are you dropping more music soon?":
             "Absolutely. This is just the beginning. More tracks are on the way — real, raw, and full of feeling.",
         "Is this song about someone special?":
             "Let us just say I plan on staying in love for the future — do not ask me who.",
         "What is your vibe as an artist?":
-            "Flirty but deep — I write for people who feel everything but do not always know how to say it. I sing it for us."
+            "Flirty but deep — I write for people who feel everything but do not always know how to say it. I sing it for us.",
     }
 
-    st.write(answers.get(question, ""))
+    st.write(answers[question])
 
     if st.button("Back to Track"):
         st.session_state.step = 4
