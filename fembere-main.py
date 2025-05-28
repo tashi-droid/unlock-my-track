@@ -1,5 +1,134 @@
-# Step 5: Track Unlocked
-elif st.session_state.step == 5 and st.session_state.riddle_unlocked:
+import streamlit as st
+
+# Page config with your theme colours
+st.set_page_config(page_title="Unlock My Track", layout="centered",
+                   initial_sidebar_state="collapsed")
+
+# Constants
+VIBES = ["The Romantic", "The Overthinker", "The Savage", "The Dreamer"]
+MESSAGES = {
+    "The Romantic": "You are deep in love and willing to give your all. This song mirrors that devotion.",
+    "The Overthinker": "You analyse every lyric like a puzzle. If love feels uncertain, this will hit deep.",
+    "The Savage": "You do not play games. You want honesty and clarity — and this one is straight to the point.",
+    "The Dreamer": "You love the dream of love. Maybe you never say much, but your heart writes novels. This song gets you."
+}
+
+# Inject styles
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+    html, body, [class*="css"] {
+        background-color: #1b1b1f;
+        color: #fdf6ec;
+        font-family: 'Anton', sans-serif;
+    }
+
+    .title-pinyon {
+        font-family: 'Pinyon Script', cursive !important;
+        font-size: 4rem;
+        font-weight: normal;
+        color: #f5d372;
+        margin-bottom: 0.3rem;
+        text-shadow: 1px 1px 4px #000000cc;
+    }
+
+    div.stButton > button {
+        background-color: #f5d372;
+        color: #1b1b1f;
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 0.7em 1.5em;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+    }
+    div.stButton > button:hover {
+        background-color: #e0c75a;
+    }
+
+    .stApp > .main > div {
+        background-color: #2b2b30;
+        padding: 2rem;
+        border-radius: 15px;
+    }
+
+    label[data-baseweb="radio"] > div {
+        font-size: 1.3rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Initialise session state with defaults
+defaults = {
+    "step": 1,
+    "selected_vibe": None,
+    "show_message": False,
+    "riddle_unlocked": False,
+    "wrong_guess": False,
+    "speaks_shona": None
+}
+for key, value in defaults.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
+
+# --- Step 1: Vibe Selection ---
+if st.session_state.step == 1:
+    st.markdown('<h1 class="title-pinyon">Unlock My Track</h1>', unsafe_allow_html=True)
+    st.write("## Who Are You Today?")
+
+    vibe = st.radio("Pick your vibe:", VIBES,
+                    index=0 if st.session_state.selected_vibe is None else VIBES.index(st.session_state.selected_vibe))
+
+    if vibe != st.session_state.selected_vibe:
+        st.session_state.selected_vibe = vibe
+        st.session_state.show_message = False
+
+    if st.button("Next") and st.session_state.selected_vibe:
+        st.session_state.step = 2
+
+# --- Step 2: Show Vibe Message ---
+elif st.session_state.step == 2:
+    st.markdown('<h1 class="title-pinyon">Your Vibe Message</h1>', unsafe_allow_html=True)
+    st.info(MESSAGES.get(st.session_state.selected_vibe, "Unknown vibe."))
+
+    if st.button("Proceed to Unlock Track"):
+        st.session_state.step = 3
+    if st.button("Back"):
+        st.session_state.step = 1
+
+# --- Step 3: Riddle Page ---
+elif st.session_state.step == 3:
+    st.write("## Solve This Riddle To Unlock The Track")
+    st.markdown(
+        "> If I am not a mind reader,  \n"
+        "> If I want to know exactly what my love wants,  \n"
+        "> If I am not a fan of guessing games,  \n"
+        "> In Shona, I say “handi... ?”  \n"
+        "> *(Fill in the blank — what is the missing word?)*"
+    )
+    guess = st.text_input("Your answer:")
+
+    if st.button("Unlock"):
+        if guess.strip().lower() == "fembere":
+            st.session_state.update({
+                "riddle_unlocked": True,
+                "step": 4,
+                "wrong_guess": False,
+                "speaks_shona": None
+            })
+        else:
+            st.error("Wrong guess. Hint: It is a Shona word meaning 'to guess'. Try again!")
+            st.session_state.update({
+                "wrong_guess": True,
+                "step": 6
+            })
+
+    if st.button("Back"):
+        st.session_state.step = 2
+
+# --- Step 4: Track Unlocked ---
+elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
     st.markdown('<h1 class="title-pinyon">Track Unlocked</h1>', unsafe_allow_html=True)
 
     try:
@@ -16,27 +145,62 @@ elif st.session_state.step == 5 and st.session_state.riddle_unlocked:
         """)
 
     st.markdown("#### Stream it here:")
-    st.markdown("(https://distrokid.com/hyperfollow/atashii/fembere)")
+    st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/why-dont-you-love-me)")
     st.markdown("[Instagram](https://www.instagram.com/akanaka._.tashi/)")
     st.markdown("[TikTok](https://tiktok.com/@atashii_sings)")
 
-    # QR Code
-    try:
-        st.image("Fembere_QR.png", caption="Scan to stream 'Fembere'", width=200)
-    except Exception:
-        st.warning("QR code image 'Fembere_QR.png' not found.")
-
-    # Audio preview
-    try:
-        st.audio("Fembere_Preview.mp3")
-    except Exception:
-        st.warning("Audio preview file 'Fembere_Preview.mp3' not found.")
-
     if st.button("Ask Me Questions"):
-        st.session_state.step = 7
+        st.session_state.step = 6
 
     if st.button("Back"):
-        st.session_state.step = 3
-        st.session_state.riddle_unlocked = False
-        st.session_state.wrong_guess = False
-        st.session_state.speaks_shona = None
+        st.session_state.update({
+            "step": 3,
+            "riddle_unlocked": False,
+            "wrong_guess": False,
+            "speaks_shona": None
+        })
+
+# --- Step 6: Wrong Guess — Ask if user speaks Shona ---
+elif st.session_state.step == 6 and st.session_state.wrong_guess:
+    st.write("## Do You Speak Shona?")
+    answer = st.radio("Please select:", ["Yes", "No"])
+
+    if st.button("Submit"):
+        if answer == "Yes":
+            st.session_state.update({
+                "speaks_shona": True,
+                "step": 3
+            })
+        else:
+            st.session_state.update({
+                "speaks_shona": False,
+                "riddle_unlocked": True,
+                "step": 4
+            })
+
+    if st.button("Back"):
+        st.session_state.update({
+            "step": 3,
+            "wrong_guess": False
+        })
+
+# --- Step 6 (Q&A Page) ---
+elif st.session_state.step == 6 and not st.session_state.wrong_guess:
+    st.write("## Ask Me Anything")
+    question = st.selectbox("Pick a question:", [
+        "What inspired this track?",
+        "Are you dropping more music soon?",
+        "Is this song about someone special?",
+        "What is your vibe as an artist?"
+    ])
+
+    answers = {
+        "What inspired this track?": "This track came from a place of being in love — but realising love only works when both people are truly happy.",
+        "Are you dropping more music soon?": "Absolutely. This is just the beginning. More tracks are on the way — real, raw, and full of feeling.",
+        "Is this song about someone special?": "Let us just say I plan on staying in love for the future — do not ask me who.",
+        "What is your vibe as an artist?": "Flirty but deep — I write for people who feel everything but do not always know how to say it. I sing it for us."
+    }
+    st.write(answers[question])
+
+    if st.button("Back to Track"):
+        st.session_state.step = 4
