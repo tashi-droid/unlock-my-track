@@ -70,7 +70,7 @@ elif st.session_state.step == 3:
 elif st.session_state.step == 4:
     st.success("🎉 You unlocked the track!")
     try:
-        st.image("Fembere.png", caption="Fembere", use_column_width=True)
+        st.image("Fembere.png", caption="Fembere", use_container_width=True)
     except:
         st.warning("Image not found.")
 
