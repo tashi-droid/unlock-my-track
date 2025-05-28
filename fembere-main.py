@@ -76,7 +76,6 @@ vibe_messages = {
     "The Dreamer": "You love the dream of love. Maybe you never say much, but your heart writes novels. This song gets you.",
 }
 
-# STEP 1: Pick vibe
 if st.session_state.step == 1:
     st.markdown('<h1 class="title-pinyon">Unlock My Track</h1>', unsafe_allow_html=True)
     st.subheader("Who Are You Today?")
@@ -86,13 +85,12 @@ if st.session_state.step == 1:
         st.session_state.selected_vibe = vibe
         st.session_state.step = 2
 
-st.markdown("""
-<small style='display:block; margin-top:0.5rem; color:#aaa; font-size:0.9rem;'>
-⚠️ If a button doesn't respond immediately, try double-clicking it — Streamlit can be quirky sometimes!
-</small>
-""", unsafe_allow_html=True)
+    st.markdown("""
+    <small style='display:block; margin-top:0.5rem; color:#aaa; font-size:0.9rem;'>
+    ⚠️ If a button doesn't respond immediately, try double-clicking it — Streamlit can be quirky sometimes!
+    </small>
+    """, unsafe_allow_html=True)
 
-# STEP 2: Show vibe message
 elif st.session_state.step == 2:
     st.subheader("A message for you")
     st.info(vibe_messages[st.session_state.selected_vibe])
