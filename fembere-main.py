@@ -185,7 +185,8 @@ elif st.session_state.step == 4 and st.session_state.riddle_unlocked:
             "*'Fembera'* means **'to guess'**, so — no games here."
         )
 
-    st.markdown("#### Follow me for updates:")
+    st.markdown("#### Presave and follow me for updates:")
+    st.markdown("[🎧 Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/fembere)")
     st.markdown("[Instagram](https://www.instagram.com/akanaka._.tashi/)")
     st.markdown("[TikTok](https://tiktok.com/@atashii_sings)")
 
