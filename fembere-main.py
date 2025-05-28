@@ -1,4 +1,54 @@
 import streamlit as st
+# Inject your theme colors and fonts using CSS + Google Fonts
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+    /* Boldoni FLF is not on Google Fonts, so use a close alternative: 'Anton' or 'Playfair Display' */
+    @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+    html, body, [class*="css"] {
+        background-color: #1b1b1f;
+        color: #fdf6ec;
+        font-family: 'Anton', sans-serif;
+    }
+
+    /* Title uses Pinyon Script */
+    .title-pinyon {
+        font-family: 'Pinyon Script', cursive !important;
+        font-size: 4rem;
+        font-weight: normal;
+        color: #f5d372;
+        margin-bottom: 0.3rem;
+        text-shadow: 1px 1px 4px #000000cc;
+    }
+
+    /* Buttons styling to use primaryColor */
+    div.stButton > button {
+        background-color: #f5d372;
+        color: #1b1b1f;
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 0.7em 1.5em;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+    }
+    div.stButton > button:hover {
+        background-color: #e0c75a;
+    }
+
+    /* Container background color for sections */
+    .stApp > .main > div {
+        background-color: #2b2b30;
+        padding: 2rem;
+        border-radius: 15px;
+    }
+
+    /* Radio buttons bigger font */
+    label[data-baseweb="radio"] > div {
+        font-size: 1.3rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # Track correct guesses
 if "riddle_correct_total" not in st.session_state:
@@ -16,10 +66,10 @@ for k, v in defaults.items():
 
 correct_answer = "fembere"
 vibe_messages = {
-    "The Romantic": "You are deep in love...",
-    "The Overthinker": "You analyse every lyric...",
-    "The Savage": "You do not play games...",
-    "The Dreamer": "You love the dream of love...",
+    "The Romantic": "You are deep in love and willing to give your all. This song mirrors that devotion.",
+    "The Overthinker": "You analyse every lyric like a puzzle. If love feels uncertain to you right now, this song will hit deep.",
+    "The Savage": "You do not play games. You want honesty and clarity — and this one is straight to the point. Give it a listen.",
+    "The Dreamer": "You love the dream of love. Maybe you never say much, but your heart writes novels. This song gets you.",
 }
 
 # STEP 1: Pick vibe
@@ -34,7 +84,7 @@ if st.session_state.step == 1:
 
 # STEP 2: Show vibe message
 elif st.session_state.step == 2:
-    st.subheader("Your Vibe Message")
+    st.subheader("A message for you")
     st.info(vibe_messages[st.session_state.selected_vibe])
 
     col1, col2 = st.columns(2)
