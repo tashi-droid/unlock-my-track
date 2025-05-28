@@ -1,54 +1,58 @@
 import streamlit as st
 # Inject your theme colors and fonts using CSS + Google Fonts
+
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
-    /* Boldoni FLF is not on Google Fonts, so use a close alternative: 'Anton' or 'Playfair Display' */
     @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-    html, body, [class*="css"] {
-        background-color: #1b1b1f;
-        color: #fdf6ec;
-        font-family: 'Anton', sans-serif;
+    /* Apply base styles to body */
+    body, .css-1d391kg {  /* The class may vary; .css-1d391kg is often the main content container */
+        background-color: #1b1b1f !important;
+        color: #fdf6ec !important;
+        font-family: 'Anton', sans-serif !important;
     }
 
     /* Title uses Pinyon Script */
     .title-pinyon {
         font-family: 'Pinyon Script', cursive !important;
-        font-size: 4rem;
-        font-weight: normal;
-        color: #f5d372;
-        margin-bottom: 0.3rem;
-        text-shadow: 1px 1px 4px #000000cc;
+        font-size: 4rem !important;
+        font-weight: normal !important;
+        color: #f5d372 !important;
+        margin-bottom: 0.3rem !important;
+        text-shadow: 1px 1px 4px #000000cc !important;
     }
 
-    /* Buttons styling to use primaryColor */
+    /* Style stButton buttons */
     div.stButton > button {
-        background-color: #f5d372;
-        color: #1b1b1f;
-        font-weight: bold;
-        border-radius: 12px;
-        padding: 0.7em 1.5em;
-        font-size: 1.1rem;
-        transition: background-color 0.3s ease;
+        background-color: #f5d372 !important;
+        color: #1b1b1f !important;
+        font-weight: bold !important;
+        border-radius: 12px !important;
+        padding: 0.7em 1.5em !important;
+        font-size: 1.1rem !important;
+        transition: background-color 0.3s ease !important;
+        border: none !important;
+        cursor: pointer !important;
     }
     div.stButton > button:hover {
-        background-color: #e0c75a;
+        background-color: #e0c75a !important;
     }
 
-    /* Container background color for sections */
+    /* Container background */
     .stApp > .main > div {
-        background-color: #2b2b30;
-        padding: 2rem;
-        border-radius: 15px;
+        background-color: #2b2b30 !important;
+        padding: 2rem !important;
+        border-radius: 15px !important;
     }
 
     /* Radio buttons bigger font */
     label[data-baseweb="radio"] > div {
-        font-size: 1.3rem;
+        font-size: 1.3rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # Track correct guesses
 if "riddle_correct_total" not in st.session_state:
@@ -125,13 +129,15 @@ elif st.session_state.step == 4:
         st.warning("Image not found.")
 
     st.markdown("The track is **Fembere**.")
+    st.markdown('<h1 class="subheader-pinyon">Fembere</h1>', unsafe_allow_html=True)
+
     st.markdown("**Total correct answers so far:** " + str(st.session_state.riddle_correct_total))
 
     with st.expander("What does 'handi fembere' mean?"):
         st.write("In Shona, *'handi fembere'* means **'I will not guess'**. No games. Just truth.")
 
     st.markdown("#### Stream it here:")
-    st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/why-dont-you-love-me)")
+    st.markdown("[Listen on DistroKid](https://distrokid.com/hyperfollow/atashii/fembere)")
 
     if st.button("Ask Me Questions"):
         st.session_state.step = 7
